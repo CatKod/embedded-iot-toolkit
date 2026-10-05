@@ -1,5 +1,9 @@
 # embedded-iot-toolkit
 
+![build](https://github.com/CatKod/embedded-iot-toolkit/actions/workflows/build.yml/badge.svg)
+![license](https://img.shields.io/badge/license-MIT-blue.svg)
+![language](https://img.shields.io/badge/language-C99-informational)
+
 Reusable, portable C building blocks for embedded + IoT firmware.
 
 Every module here was written for a real project, then generalised so the next
@@ -51,8 +55,8 @@ Those four answers live here. They are small, tested, and portable.
   yields an error, not the previous value.
 - **Zero dynamic allocation.** Fixed buffers only, so nothing allocates from a
   heap you may not have.
-- **Warnings are errors.** The test suite builds under
-  `-Wall -Wextra -Wpedantic -Werror`.
+- **Warnings are errors.** The suite builds under
+  `-Wall -Wextra -Wpedantic -Werror`, on both gcc and clang in CI.
 
 ## Quick start
 
@@ -88,7 +92,7 @@ void on_uart_rx(char byte)
 {
     ekt_frame_t frame;
     switch (ekt_frame_feed(&rx, byte, &frame)) {
-        case EKT_FRAME_OK:    handle(&frame); break;
+        case EKT_FRAME_OK:     handle(&frame); break;
         case EKT_FRAME_BAD_CRC: /* drop it, resyncs automatically */ break;
         default: break;
     }
@@ -137,6 +141,9 @@ run_tests.bat
                   reading · RFID compare · shift-register shadow
 ```
 
+The same suite runs in CI on both gcc and clang, so the code is verified
+against two independent compilers on every push.
+
 ## Porting to a new target
 
 1. Copy `port/posix/ekt_port_posix.c` as a starting point.
@@ -168,4 +175,4 @@ target_sources(app PRIVATE
 ## License
 
 MIT — use it in commercial firmware without attribution obligations beyond
-keeping the notice.
+keeping the notice. Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
