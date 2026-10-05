@@ -1,0 +1,38 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Host unit tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ matrix.compiler }}
+
+      - name: Build and run tests
+        run: |
+          ${{ matrix.compiler }} -std=c99 -Wall -Wextra -Wpedantic -Werror \
+            -Iinclude -Itest \
+            src/ekt_soft_timer.c \
+            src/ekt_frame.c \
+            src/ekt_can_codec.c \
+            src/ekt_sensor.c \
+            port/posix/ekt_port_posix.c \
+            test/test_core.c \
+            -o build_${{ matrix.compiler }}
+          ./build_${{ matrix.compiler }}
