@@ -1,0 +1,31 @@
+# Build artefacts
+build/
+*.o
+*.obj
+*.exe
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.su
+*.gcda
+*.gcno
+*.gcov
+
+# IDE
+.vscode/
+.idea/
+*.user
+*.bak
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python tooling caches
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
