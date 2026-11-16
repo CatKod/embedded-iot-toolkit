@@ -3,7 +3,9 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "ekt/ekt_can_codec.h"
+#include "ekt_can_codec.h"
+
+#include <stddef.h>
 
 #define EKT_EFF_FLAG 0x80000000U /* Frame format: extended ID */
 

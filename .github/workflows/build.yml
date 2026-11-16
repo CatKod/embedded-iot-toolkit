@@ -27,7 +27,7 @@ jobs:
       - name: Build and run tests
         run: |
           ${{ matrix.compiler }} -std=c99 -Wall -Wextra -Wpedantic -Werror \
-            -Iinclude -Itest \
+            -Isrc -Itest \
             src/ekt_soft_timer.c \
             src/ekt_frame.c \
             src/ekt_can_codec.c \
@@ -36,3 +36,50 @@ jobs:
             test/test_core.c \
             -o build_${{ matrix.compiler }}
           ./build_${{ matrix.compiler }}
+
+  arduino-lint:
+    name: Arduino Library Specification
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install arduino-lint
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-lint/main/install.sh | BINDIR=/usr/local/bin sh
+
+      - name: Lint the library
+        run: arduino-lint --compliance strict --library-manager submit .
+
+  esp-idf:
+    name: ESP-IDF component build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up ESP-IDF
+        uses: espressif/setup-esp@v2
+        with:
+          version: v5.5.3
+          target: esp32s3
+
+      - name: Build the component in a host project
+        run: |
+          mkdir -p example_project/main example_project/components
+          cp examples/esp32_timer/CMakeLists.txt example_project/
+          cp examples/esp32_timer/main/* example_project/main/
+          ln -s "$GITHUB_WORKSPACE" example_project/components/embedded_iot_toolkit
+          # The example pulls the component from the registry; during CI we
+          # build the working tree instead.
+          sed -i '/catkod\/embedded-iot-toolkit/d' example_project/main/idf_component.yml
+          cd example_project
+          idf.py set-target esp32s3
+          idf.py build
+
+      - name: Upload the component archive as an artifact
+        run: |
+          pip install --upgrade idf-component-manager
+          compote component pack --name embedded-iot-toolkit
+          tar -czf ekt-component.tar.gz dist/embedded-iot-toolkit_*.tgz
+        continue-on-error: true

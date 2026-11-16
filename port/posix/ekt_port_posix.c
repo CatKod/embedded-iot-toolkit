@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "ekt/ekt_port.h"
+#include "ekt_port.h"
 
 #include <stddef.h>
 #include <time.h>

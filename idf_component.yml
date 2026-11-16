@@ -1,0 +1,46 @@
+version: "1.0.0"
+description: "Portable C99 building blocks for embedded and IoT firmware: non-blocking timers, ISR-safe framed serial protocol, CAN 2.0B identifier codec, and sensor helpers."
+url: "https://github.com/CatKod/embedded-iot-toolkit"
+repository: "https://github.com/CatKod/embedded-iot-toolkit.git"
+documentation: "https://github.com/CatKod/embedded-iot-toolkit#readme"
+issues: "https://github.com/CatKod/embedded-iot-toolkit/issues"
+license: "MIT"
+maintainers:
+  - "CatKod <kimvinhh6@gmail.com>"
+tags:
+  - embedded
+  - iot
+  - firmware
+  - timer
+  - serial-protocol
+  - can
+  - sensors
+  - c99
+dependencies:
+  idf: ">=5.0"
+targets:
+  - esp32
+  - esp32s2
+  - esp32s3
+  - esp32c3
+  - esp32c6
+  - esp32p4
+files:
+  exclude:
+    - ".github/**/*"
+    - "test/**/*"
+    # Ports for other toolchains: the ESP-IDF component only builds
+    # port/esp32 (see CMakeLists.txt), the rest is shipped for other targets.
+    - "port/stm32/**/*"
+    - "port/posix/**/*"
+    # Arduino port: only meaningful to arduino-cli, which compiles src/
+    # recursively and therefore picks it up automatically.
+    - "src/port_arduino/**/*"
+    # Arduino sketches are not ESP-IDF projects. The registry auto-discovers
+    # every directory under examples/, so they are kept out of this archive.
+    - "examples/CanCodec/**/*"
+    - "examples/FramedSerial/**/*"
+    - "examples/SoftTimerBank/**/*"
+    - "run_tests.bat"
+    - "run_tests.sh"
+    - "build/**/*"

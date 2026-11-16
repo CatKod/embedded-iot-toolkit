@@ -3,6 +3,8 @@
 ![build](https://github.com/CatKod/embedded-iot-toolkit/actions/workflows/build.yml/badge.svg)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![language](https://img.shields.io/badge/language-C99-informational)
+![Arduino](https://img.shields.io/badge/Arduino-Library%20Manager-00979D.svg)
+![ESP-IDF](https://img.shields.io/badge/ESP--IDF-Component%20Registry-E7354B.svg)
 
 Reusable, portable C building blocks for embedded + IoT firmware.
 
@@ -38,11 +40,11 @@ Those four answers live here. They are small, tested, and portable.
 
 | Module | What it does |
 |---|---|
-| [`ekt_soft_timer`](include/ekt/ekt_soft_timer.h) | Non-blocking periodic timer bank driven by a 1 kHz tick. Catches up correctly if the scheduler is starved. |
-| [`ekt_frame`](include/ekt/ekt_frame.h) | ASCII framed serial protocol with XOR checksum, byte-at-a-time ISR-safe parsing, and automatic resync after line noise. |
-| [`ekt_can_codec`](include/ekt/ekt_can_codec.h) | CAN 2.0B 29-bit identifier pack/unpack with field-range validation, plus a bit-timing solver (prescaler / TSEG1 / TSEG2) for a target bitrate and sample point. |
-| [`ekt_sensor`](include/ekt/ekt_sensor.h) | DHT11 decode with checksum + range validation and a minimum sampling interval, RC522 UID comparison, and a 74HC595 shadow register. |
-| [`ekt_port`](include/ekt/ekt_port.h) | The only header that hardware is allowed behind. |
+| [`ekt_soft_timer`](src/ekt_soft_timer.h) | Non-blocking periodic timer bank driven by a 1 kHz tick. Catches up correctly if the scheduler is starved. |
+| [`ekt_frame`](src/ekt_frame.h) | ASCII framed serial protocol with XOR checksum, byte-at-a-time ISR-safe parsing, and automatic resync after line noise. |
+| [`ekt_can_codec`](src/ekt_can_codec.h) | CAN 2.0B 29-bit identifier pack/unpack with field-range validation, plus a bit-timing solver (prescaler / TSEG1 / TSEG2) for a target bitrate and sample point. |
+| [`ekt_sensor`](src/ekt_sensor.h) | DHT11 decode with checksum + range validation and a minimum sampling interval, RC522 UID comparison, and a 74HC595 shadow register. |
+| [`ekt_port`](src/ekt_port.h) | The only header that hardware is allowed behind. |
 
 ### Design rules this library follows
 
@@ -61,8 +63,10 @@ Those four answers live here. They are small, tested, and portable.
 ## Quick start
 
 ```c
-#include "ekt/ekt_soft_timer.h"
-#include "ekt/ekt_frame.h"
+#include "EmbeddedIoTToolkit.h"
+/* or the individual headers: */
+#include "ekt_soft_timer.h"
+#include "ekt_frame.h"
 
 static ekt_timer_t timers[4];
 static ekt_frame_parser_t rx;
@@ -143,16 +147,59 @@ run_tests.bat
 
 The same suite runs in CI on both gcc and clang, so the code is verified
 against two independent compilers on every push.
+## Installation
 
-## Porting to a new target
+The toolkit is published to both registries, so you can install it the way
+your build system already works.
 
-1. Copy `port/posix/ekt_port_posix.c` as a starting point.
-2. Implement the four functions in `ekt_port.h` using your HAL.
-3. Build `src/*.c` plus your port file; add `include/` to the include path.
+### ESP-IDF Component Registry
 
-The core never needs to change.
+```bash
+idf.py add-dependency "catkod/embedded_iot_toolkit^1.0.0"
+```
 
-## Integration
+Or add it to your `main/idf_component.yml`:
+
+```yaml
+dependencies:
+  catkod/embedded_iot_toolkit: "^1.0.0"
+```
+
+Then pull it into the component requirement list:
+
+```cmake
+idf_component_register(
+    SRCS "main.c"
+    INCLUDE_DIRS "."
+    REQUIRES catkod/embedded_iot_toolkit
+)
+```
+
+A runnable example lives in
+[`examples/esp32_timer`](examples/esp32_timer) — it drives the timer bank from
+a FreeRTOS task.
+
+### Arduino Library Manager
+
+Install from the Arduino IDE: **Sketch → Include Library → Manage Libraries**,
+then search for `EmbeddedIoTToolkit`.
+
+Or from the CLI:
+
+```bash
+arduino-cli lib install EmbeddedIoTToolkit
+```
+
+Then in your sketch:
+
+```cpp
+#include <EmbeddedIoTToolkit.h>
+```
+
+Examples: [`SoftTimerBank`](examples/SoftTimerBank),
+[`FramedSerial`](examples/FramedSerial), [`CanCodec`](examples/CanCodec).
+
+### Plain CMake / STM32 / anything else
 
 Drop the folder into your project, or add it as a submodule:
 
@@ -163,13 +210,36 @@ git submodule add https://github.com/CatKod/embedded-iot-toolkit 3rdparty/ekt
 Then in CMake:
 
 ```cmake
-target_include_directories(app PRIVATE 3rdparty/ekt/include)
+target_include_directories(app PRIVATE 3rdparty/ekt/src)
 target_sources(app PRIVATE
     3rdparty/ekt/src/ekt_soft_timer.c
     3rdparty/ekt/src/ekt_frame.c
     3rdparty/ekt/src/ekt_can_codec.c
     3rdparty/ekt/src/ekt_sensor.c
 )
+```
+
+## Porting to a new target
+
+1. Copy `port/posix/ekt_port_posix.c` as a starting point.
+2. Implement the four functions in `ekt_port.h` using your HAL.
+3. Build `src/*.c` plus your port file; add `src/` to the include path.
+
+The core never needs to change.
+
+## Repository layout
+
+```
+src/                     pure C99 core + the Arduino port
+  EmbeddedIoTToolkit.h   umbrella header (Arduino public interface)
+  ekt_*.h / ekt_*.c      the modules
+  port_arduino/          Arduino implementation of the port hooks
+port/
+  esp32/                 ESP-IDF port (built automatically for esp32 targets)
+  posix/                 POSIX port, used by the host test suite
+  stm32/                 STM32 port
+examples/                Arduino sketches (.ino) + one ESP-IDF project
+test/                    host unit tests
 ```
 
 ## License

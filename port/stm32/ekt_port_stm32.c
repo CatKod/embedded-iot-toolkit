@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "ekt/ekt_port.h"
+#include "ekt_port.h"
 
 #include "ekt_port_stm32.h"
 

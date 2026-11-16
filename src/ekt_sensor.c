@@ -6,9 +6,10 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "ekt/ekt_port.h"
-#include "ekt/ekt_sensor.h"
+#include "ekt_port.h"
+#include "ekt_sensor.h"
 
+#include <stddef.h>
 #include <string.h>
 
 /* ---------------------------------------------------------------- DHT11 --- */

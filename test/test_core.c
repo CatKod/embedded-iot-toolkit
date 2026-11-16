@@ -8,10 +8,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "ekt/ekt_can_codec.h"
-#include "ekt/ekt_frame.h"
-#include "ekt/ekt_sensor.h"
-#include "ekt/ekt_soft_timer.h"
+#include "ekt_can_codec.h"
+#include "ekt_frame.h"
+#include "ekt_sensor.h"
+#include "ekt_soft_timer.h"
 #include "ekt_test.h"
 
 /* Test hook implemented in the POSIX port. */

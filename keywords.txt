@@ -1,0 +1,65 @@
+#######################################
+# Syntax Coloring Map For Embedded IoT Toolkit
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ekt_timer_t	KEYWORD1
+ekt_frame_t	KEYWORD1
+ekt_frame_parser_t	KEYWORD1
+ekt_frame_status_t	KEYWORD1
+ekt_can_id_t	KEYWORD1
+ekt_sensor_status_t	KEYWORD1
+ekt_sample_t	KEYWORD1
+ekt_dht11_t	KEYWORD1
+ekt_rfid_state_t	KEYWORD1
+ekt_shift74hc595_t	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+ekt_timer_init	KEYWORD2
+ekt_timer_start	KEYWORD2
+ekt_timer_stop	KEYWORD2
+ekt_timer_tick	KEYWORD2
+ekt_timer_expired	KEYWORD2
+ekt_frame_parser_init	KEYWORD2
+ekt_frame_feed	KEYWORD2
+ekt_frame_format	KEYWORD2
+ekt_frame_checksum	KEYWORD2
+ekt_can_id_pack	KEYWORD2
+ekt_can_id_unpack	KEYWORD2
+ekt_can_id_std	KEYWORD2
+ekt_can_bit_timing	KEYWORD2
+ekt_dht11_init	KEYWORD2
+ekt_dht11_read	KEYWORD2
+ekt_rfid_present	KEYWORD2
+ekt_rfid_uid_equal	KEYWORD2
+ekt_shift74hc595_init	KEYWORD2
+ekt_shift74hc595_set	KEYWORD2
+ekt_shift74hc595_clear	KEYWORD2
+ekt_shift74hc595_dirty	KEYWORD2
+ekt_port_millis	KEYWORD2
+ekt_port_delay_us	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+EKT_FRAME_OK	LITERAL1
+EKT_FRAME_EMPTY	LITERAL1
+EKT_FRAME_TOO_LONG	LITERAL1
+EKT_FRAME_BAD_CRC	LITERAL1
+EKT_FRAME_BAD_TYPE	LITERAL1
+EKT_SENSOR_OK	LITERAL1
+EKT_SENSOR_TIMEOUT	LITERAL1
+EKT_SENSOR_CRC_FAIL	LITERAL1
+EKT_SENSOR_NO_ANSWER	LITERAL1
+EKT_SENSOR_RANGE	LITERAL1
+EKT_CAN_ID_STD_MASK	LITERAL1
+EKT_CAN_PAYLOAD_EXT	LITERAL1
+EKT_FRAME_MAX_LEN	LITERAL1
+EKT_TIMER_MAX_SLOTS	LITERAL1

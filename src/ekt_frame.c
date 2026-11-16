@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "ekt/ekt_frame.h"
+#include "ekt_frame.h"
 
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 

@@ -9,7 +9,7 @@ mkdir -p build
 
 echo "Building test_core..."
 "$CC" -std=c99 -Wall -Wextra -Wpedantic -Werror \
-  -Iinclude -Itest \
+  -Isrc -Itest \
   src/ekt_soft_timer.c \
   src/ekt_frame.c \
   src/ekt_can_codec.c \

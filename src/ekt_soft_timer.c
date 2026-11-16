@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: MIT
  */
-#include "ekt/ekt_soft_timer.h"
+#include "ekt_soft_timer.h"
 
+#include <stddef.h>
 #include <string.h>
 
 void ekt_timer_init(ekt_timer_t *timers, uint8_t count)
