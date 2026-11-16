@@ -5,6 +5,13 @@
  *
  * SPDX-License-Identifier: MIT
  */
+
+/* clock_gettime() and nanosleep() are POSIX.1-2001, not ISO C99, so they need
+ * the feature test macro before any header is pulled in. */
+#if !defined(_POSIX_C_SOURCE)
+#define _POSIX_C_SOURCE 200809L
+#endif
+
 #include "ekt_port.h"
 
 #include <stddef.h>
