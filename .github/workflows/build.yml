@@ -55,7 +55,7 @@ jobs:
           arduino-lint --version
 
       - name: Lint the library
-        run: arduino-lint --compliance strict --library-manager submit .
+        run: arduino-lint --compliance strict --library-manager submit "$GITHUB_WORKSPACE"
 
   esp-idf:
     name: ESP-IDF component build
